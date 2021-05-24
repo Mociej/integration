@@ -50,6 +50,34 @@ class UserRepositoryTest {
     }
 
     @Test
+    void shouldFindOneUserByPartOfEmail(){
+        repository.save(user);
+        List<User> users = repository
+                .findByFirstNameContainingOrLastNameContainingOrEmailContainingAllIgnoreCase("", "", "john@do");
+
+        assertThat(users, hasSize(1));
+
+    }
+
+    @Test
+    void shouldFindOneUserByFirstnameAndEmail(){
+        repository.save(user);
+        List<User> users = repository
+                .findByFirstNameContainingOrLastNameContainingOrEmailContainingAllIgnoreCase("Jan", "", "john@domain.com");
+
+        assertThat(users, hasSize(1));
+
+    }
+    @Test
+    void shouldFindZeroUserByInvalidFirstnameAndEmail(){
+        List<User> users = repository
+                .findByFirstNameContainingOrLastNameContainingOrEmailContainingAllIgnoreCase("Jand", "", "johsn@domadin.com");
+
+        assertThat(users, hasSize(0));
+
+    }
+
+    @Test
     void shouldFindNoUsersIfRepositoryIsEmpty() {
 
         List<User> users = repository.findAll();
