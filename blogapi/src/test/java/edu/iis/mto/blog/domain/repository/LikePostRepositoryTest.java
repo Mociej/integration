@@ -100,5 +100,4 @@ public class LikePostRepositoryTest {
         assertThat(optional.get().getUser().getEmail(),  equalTo(testLikePost.getUser().getEmail()));
     }
 
-
 }
