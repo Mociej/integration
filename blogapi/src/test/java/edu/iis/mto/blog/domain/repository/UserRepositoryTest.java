@@ -30,13 +30,14 @@ class UserRepositoryTest {
 
     @BeforeEach
     void setUp() {
+        repository.deleteAll();
+        repository.flush();
         user = new User();
         user.setFirstName("Jan");
         user.setEmail("john@domain.com");
         user.setAccountStatus(AccountStatus.NEW);
     }
 
-    @Disabled
     @Test
     void shouldFindNoUsersIfRepositoryIsEmpty() {
 
@@ -45,7 +46,6 @@ class UserRepositoryTest {
         assertThat(users, hasSize(0));
     }
 
-    @Disabled
     @Test
     void shouldFindOneUsersIfRepositoryContainsOneUserEntity() {
         User persistedUser = entityManager.persist(user);
@@ -57,7 +57,6 @@ class UserRepositoryTest {
                 equalTo(persistedUser.getEmail()));
     }
 
-    @Disabled
     @Test
     void shouldStoreANewUser() {
 
