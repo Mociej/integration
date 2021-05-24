@@ -8,7 +8,6 @@ import static org.hamcrest.Matchers.notNullValue;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -16,6 +15,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import edu.iis.mto.blog.domain.model.AccountStatus;
 import edu.iis.mto.blog.domain.model.User;
+
 
 @DataJpaTest
 class UserRepositoryTest {
@@ -36,6 +36,17 @@ class UserRepositoryTest {
         user.setFirstName("Jan");
         user.setEmail("john@domain.com");
         user.setAccountStatus(AccountStatus.NEW);
+    }
+
+    @Test
+    void shouldFindOneUserByFirstaname(){
+        User persistedUser = repository.save(user);
+
+        List<User> users = repository
+                .findByFirstNameContainingOrLastNameContainingOrEmailContainingAllIgnoreCase("Jan", "", "");
+
+        assertThat(users, hasSize(1));
+        assertThat(users.get(0).getEmail(), equalTo(persistedUser.getEmail()));
     }
 
     @Test
